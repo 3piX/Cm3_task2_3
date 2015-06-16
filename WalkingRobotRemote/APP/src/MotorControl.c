@@ -78,14 +78,8 @@ void move_forward(u16 speed)
 
 	mDelay(100);
 
-	// ready for next step
-	// set position ready for next step
-	DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI);
-	DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI+135);
-
-	//WALK!
-	DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI);
-	DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI-135);
+	// Take a right step (1)
+	takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135, 1);
 
 	mDelay(300);
 
@@ -99,13 +93,8 @@ void move_forward(u16 speed)
 
 	mDelay(100);
 
-	//WALK!
-	DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI+135);
-	DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI);
-
-	// set position ready for next step
-	DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI-135);
-	DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI);
+	// Take a left step (0)
+	takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135, 0);
 
 	mDelay(300);
 
@@ -155,42 +144,55 @@ void move_break()
 
 void turnLeftOnSpot(u16 speed)
 {
-	//Sit down legs
-	DXL_send_word(LEFT_FRONT_TOP_MOTOR, GOAL_POSITION_L, LEFT_FRONT_TOP_MOTOR_INI);
-	DXL_send_word(RIGHT_BACK_TOP_MOTOR, GOAL_POSITION_L, RIGHT_BACK_TOP_MOTOR_INI);
-
+	setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
 	mDelay(100);
+
 	// lift legs
-	DXL_send_word(LEFT_BACK_TOP_MOTOR, GOAL_POSITION_L, LEFT_BACK_TOP_MOTOR_INI + 80);
-	DXL_send_word(RIGHT_FRONT_TOP_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_TOP_MOTOR_INI - 80);
-
+	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, 80);
 	mDelay(100);
+
 	// Move to position for next step
 	DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI+135);
 	DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI+135);
-
 	mDelay(300);
 
-	// Sit down legs
-	DXL_send_word(LEFT_BACK_TOP_MOTOR, GOAL_POSITION_L, LEFT_BACK_TOP_MOTOR_INI);
-	DXL_send_word(RIGHT_FRONT_TOP_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_TOP_MOTOR_INI);
-
+	// Set down legs
+	setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
 	mDelay(100);
 
-	DXL_send_word(LEFT_FRONT_TOP_MOTOR, GOAL_POSITION_L, LEFT_FRONT_TOP_MOTOR_INI + 80);
-	DXL_send_word(RIGHT_BACK_TOP_MOTOR, GOAL_POSITION_L, RIGHT_BACK_TOP_MOTOR_INI - 80);
-
+	// Lift legs
+	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, 80);
 	mDelay(100);
 
-	DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI);
-	DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI);
-
+	// Set down legs
+	setDownLegs(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR);
 }
 
 void turnRightOnSpot(u16 speed)
 {
+	setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
+	mDelay(100);
 
-	
+	// lift legs
+	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, 80);
+	mDelay(100);
+
+	// Move to position for next step
+	turnStep(LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135)
+	mDelay(300);
+
+	// Set down legs
+	setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
+	mDelay(100);
+
+	// Lift legs
+	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, 80);
+	mDelay(100);
+
+	// TODO:
+	// Is this really needed?
+	// Set down legs
+	setDownLegs(LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR);
 }
 
 void setDownLegs(u8 motor1, u8 motor2)
@@ -203,6 +205,36 @@ void liftUpLegs(u8 motor1, u8 motor2, u8 value)
 {
 	DXL_send_word(motor1, GOAL_POSITION_L, getLeftTopIni() + value);
 	DXL_send_word(motor2, GOAL_POSITION_L, getRightTopIni() - value);
+}
+
+void takeStep(u8 motor1, u8 motor2, u8 motor3, u8 motor4, u8 value, u8 side)
+{
+	int botMotorIni = getBotIni();
+	// Take a right or else take a left step
+	if(side == 1)
+	{
+		DXL_send_word(motor1, GOAL_POSITION_L, botMotorIni);
+		DXL_send_word(motor2, GOAL_POSITION_L, botMotorIni + value);
+
+		DXL_send_word(motor3, GOAL_POSITION_L, botMotorIni);
+		DXL_send_word(motor4, GOAL_POSITION_L, botMotorIni - value);		
+	}
+	else
+	{
+		DXL_send_word(motor1, GOAL_POSITION_L, botMotorIni + value);
+		DXL_send_word(motor2, GOAL_POSITION_L, botMotorIni);
+
+		DXL_send_word(motor3, GOAL_POSITION_L, botMotorIni - value);
+		DXL_send_word(motor4, GOAL_POSITION_L, botMotorIni);		
+	}
+
+}
+
+void turnStep(u8 motor1, u8 motor2, u8 value)
+{
+	int botMotorIni = getBotIni();
+	DXL_send_word(motor1, GOAL_POSITION_L, botMotorIni + value);
+	DXL_send_word(motor2, GOAL_POSITION_L, botMotorIni + value);
 }
 
 int getLeftTopIni()
