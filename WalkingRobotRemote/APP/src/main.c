@@ -108,6 +108,7 @@ int main(void)
 //	move_forward(MAX_SPEED);
 
 	initZigbee();
+	init_motors();
 
 	while(1)
 	{

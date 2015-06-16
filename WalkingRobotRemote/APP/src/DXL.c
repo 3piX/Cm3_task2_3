@@ -86,7 +86,7 @@ void DXL_send_word(u8 devId, u8 add, u16 data)
 		DXL_TX(DXL_TX_com_buf[i]); // send data
 	}
 
-	for(i = 0; i < 5000; i++) // WAIT FOR RESPONSE from device! (Approx 50 -> 100 us)
+	for(i = 0; i < 7000; i++) // WAIT FOR RESPONSE from device! (Approx 50 -> 100 us)
 	{
 		asm("nop");
 	}
