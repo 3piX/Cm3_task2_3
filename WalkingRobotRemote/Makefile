@@ -68,6 +68,7 @@ MAIN_OBJS = \
  APP/src/DXL.o \
  APP/src/MotorControl.o \
  APP/src/ADC.o \
+ APP/src/Zigbee.o \
  
 $(MAIN_OUT_ELF): $(MAIN_OBJS) stm32f10x_lib/libstm32.a
 	$(LD) $(LDFLAGS) $(MAIN_OBJS) stm32f10x_lib/libstm32.a --output $@

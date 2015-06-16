@@ -16,6 +16,7 @@
 #include "DXL.h"
 #include "DXLdef.h"
 #include "MotorControl.h"
+#include "Zigbee.h"
 #include <math.h>
 
 #include "ADC.h"
@@ -29,6 +30,23 @@
 
 #define	WALL_TRACK_RIGHT			0
 #define	WALL_TRACK_LEFT				1
+
+
+#define PORT_LED_AUX			GPIOB
+#define PORT_LED_MANAGE			GPIOB
+#define PORT_LED_PROGRAM		GPIOB
+#define PORT_LED_PLAY			GPIOB
+#define PORT_LED_POWER			GPIOC
+#define PORT_LED_TX				GPIOC
+#define PORT_LED_RX				GPIOC
+
+#define PIN_LED_AUX				GPIO_Pin_12
+#define PIN_LED_MANAGE			GPIO_Pin_13
+#define PIN_LED_PROGRAM			GPIO_Pin_14
+#define PIN_LED_PLAY			GPIO_Pin_15
+#define PIN_LED_POWER			GPIO_Pin_13
+#define PIN_LED_TX				GPIO_Pin_14
+#define PIN_LED_RX				GPIO_Pin_15
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -73,93 +91,42 @@ int main(void)
 
 	USART_Configuration(USART_PC, Baudrate_PC);
 
-	Init_Timer2();
+//	Init_Timer2();
+//
+//	TxDString(" HELLO :)\n\r");
+//	DXL_RX_com_buf[14] = 0;
+//
+//	init_ADC();
+//
+//	GPIO_SetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1P);
+//	GPIO_ResetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1M);
+//	mDelay(1000);
+//
+//	setWallTrackSide();
+//	mDelay(1000);
+//
+//	move_forward(MAX_SPEED);
 
-	TxDString(" HELLO :)\n\r");
-	DXL_RX_com_buf[14] = 0;
-
-	init_ADC();
-
-	GPIO_SetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1P);
-	GPIO_ResetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1M);
-	mDelay(1000);
-//	set_IR_position(300);
-
-	setWallTrackSide();
-	mDelay(1000);
-	//startIRsweep();
-
-	move_forward(MAX_SPEED);
+	initZigbee();
 
 	while(1)
 	{
-/*	
-		if(IRsweepDone == 1)
+
+		if(ZGB_RX_com_buf[0] == '1')
 		{
-			TxDString("buff \n\r");
-			TxDByte_PC(ADCres_buf_index);
-			TxDString("\n\r");
-			for(i = 0; i <= ADCres_buf_index; i++)
-			{
-				TxDByte_PC((ADCres_buf[i]&0xFF00)>>8);
-				TxDByte_PC((ADCres_buf[i]&0x00FF));
-				TxDString("\n\r");
-			}
-
-
-			//TxWordArray(ADCres_buf, ADCres_buf_index + 1);
-
-			startIRsweep();
-
+			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
+			zigbeeTxWord(((0x31)<<8)|(0x0D));
 		}
+		else if (ZGB_RX_com_buf[0] == '2')
+		{
+			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
+			zigbeeTxWord(((0x32)<<8)|(0x0D));
+		}
+
 		uDelay(10);
-*/
 
-/*
-// MEASUREMENTS AND AVERAGE OF SENSOR
-		for(k = 0; k < 5; k++){
-			sum = 0;
-			for(j = 0; j < 9; j++){
-				sum = sampleADC(i);
-			}
-
-			sum = sampleADC(k);	
-
-			switch(i){
-				case 0:
-				// IR_SENSOR_LEFT_front
-				TxDString("sensor 1:");
-				break;
-
-				case 1:
-				//IR_SENSOR_front
-				TxDString("sensor 2:");
-				break;
-
-				case 2:
-				//IR_SENSOR_RIGHT
-				TxDString("sensor 3:");
-				break;
-
-				case 3:
-				//IR_SENSOR_RIGHT_front
-				TxDString("sensor 4:");
-				break;
-
-				case 4:
-				//IR_SENSOR_LEFT
-				TxDString("sensor 5:");
-				break;
-			}
-			TxDByte_PC((avg&0xFF00)>>8);
-			TxDByte_PC((avg&0x00FF));
-			TxDString("\r");
-		}	
-
-		mDelay(2000);
-*/
 // SIMPLE ORIENTATION BEHAVIOUR
-
+/*
 
 		for (j = 0; j<6; j++)
 		{
@@ -169,12 +136,6 @@ int main(void)
 
 		if(ADCres_buf[IR_SENSOR_FRONT] > 0)
 		{
-			//for(j = 700; j > 0; j-=100)
-			//{
-			//	move_forward(j);
-			//	mDelay(40);
-			//}
-
 			move_break();
 
 			mDelay(300);
@@ -239,103 +200,7 @@ int main(void)
 		}
 
 		uDelay(10);
-
-		/*
-		if(ADCres_buf[IR_SENSOR_FRONT] > 20){
-			move_backward(300);
-			mDelay(250);
-			move_forward(300);
-		}
-		else{
-			move_forward(800);
-		}
-		if(ADCres_buf[IR_LONG_DIST] > 850){
-			move_left(ADCres_buf[IR_LONG_DIST]-200);
-		}
-		else if(ADCres_buf[IR_LONG_DIST] < 700){
-			move_right((1100-ADCres_buf[IR_LONG_DIST]-200));
-		}
-
-		if((ADCres_buf[IR_SENSOR_RIGHT] >ADCres_buf[IR_SENSOR_LEFT]) || (ADCres_buf[IR_SENSOR_RIGHT_front] > ADCres_buf[IR_SENSOR_LEFT_front]))
-		{
-			move_left(((ADCres_buf[IR_SENSOR_RIGHT] - ADCres_buf[IR_SENSOR_LEFT])*2) + ((ADCres_buf[IR_SENSOR_RIGHT_front]-ADCres_buf[IR_SENSOR_LEFT_front]))*4);
-		}
-		else if((ADCres_buf[IR_SENSOR_LEFT] > ADCres_buf[IR_SENSOR_RIGHT]) || (ADCres_buf[IR_SENSOR_LEFT_front] > ADCres_buf[IR_SENSOR_RIGHT_front]) )
-		{
-			move_right(((ADCres_buf[IR_SENSOR_LEFT] - ADCres_buf[IR_SENSOR_RIGHT])*2) + ((ADCres_buf[IR_SENSOR_LEFT_front]-ADCres_buf[IR_SENSOR_RIGHT_front]))*4);
-		}
 */
-
-
-
-
-
-//SWEEP CONTROLLER
-/*
-		tempADCres = 0;
-		TxDString("1\n\r");
-		set_IR_position(214);
-
-
-		while(DXL_RX_com_buf[5]&0x01)
-		{
-			DXL_read_byte(2,MOVING);
-		}
-		TIM2->CR1 = 0x00; // ENABLE TIMER!
-		TxDByte_PC(ADCres_buf_index);
-//		TxDByte_PC((TIM2->CNT&0xFF00)>>8);
-//		TxDByte_PC((TIM2->CNT&0x00FF));
-		mDelay(5000);
-		TxDString("\n\r 2 \n\r");
-		set_IR_position(814);
-		while(DXL_RX_com_buf[5]&0x01)
-		{
-			DXL_read_byte(2,MOVING);
-
-
-		}
-		TxDByte_PC(DXL_RX_com_buf[5]);
-		mDelay(1000); */
-
-		/*
-		i = 214;
-		while(i <= 814)
-		{
-			set_IR_position(i);
-
-			for (j = 0; j<10; j++)
-			{
-				tempADCres += (sampleADC(NUM_ADC1+5));
-				
-			}
-			TxDString("ADC data ");
-			TxDString(": ");
-			TxDByte_PC((tempADCres&0xFF00)>>8);
-			TxDByte_PC((tempADCres&0x00FF));
-			TxDString("\n\r");
-			i +=40;
-		}
-
-		mDelay(1000);
-		i = 774;
-		tempADCres = 0;
-		while(i >= 214)
-		{
-			set_IR_position(i);
-			for (j = 0; j<10; j++)
-			{
-				tempADCres += (sampleADC(NUM_ADC1+5));
-
-			}
-			TxDString("ADC data ");
-			TxDString(": ");
-			TxDByte_PC((tempADCres&0xFF00)>>8);
-			TxDByte_PC((tempADCres&0x00FF));
-			TxDString("\n\r");
-			i -=40;
-		} */
-
-
 
 	}
 
