@@ -91,6 +91,8 @@ int main(void)
 
 	USART_Configuration(USART_PC, Baudrate_PC);
 
+
+
 //	Init_Timer2();
 //
 //	TxDString(" HELLO :)\n\r");
@@ -108,19 +110,27 @@ int main(void)
 //	move_forward(MAX_SPEED);
 
 	initZigbee();
+
 	init_motors();
+	init_motors();
+	init_motors();
+
+
 
 	while(1)
 	{
 
 		if(ZGB_RX_com_buf[0] == '1')
 		{
+			move_forward(0);
+
 			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
 			zigbeeTxWord(((0x31)<<8)|(0x0D));
 			ZGB_RX_com_buf[0] = 0;
 		}
 		else if (ZGB_RX_com_buf[0] == '2')
 		{
+			turnLeftOnSpot(0);
 			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
 			zigbeeTxWord(((0x32)<<8)|(0x0D));
 			ZGB_RX_com_buf[0] = 0;
@@ -241,7 +251,7 @@ void __TIM2_ISR()
 
 			if(count >=814 || count <= 214)
 			{
-				TIM2->CR1 &= TIM_CR1_CEN;
+				TIM2->CR1 &= ~TIM_CR1_CEN;
 				IRsweepDone = 1;
 				sweepDirection ^= 0x01;
 			}
