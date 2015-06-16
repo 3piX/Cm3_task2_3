@@ -3,6 +3,13 @@
 #include "ADC.h"
 
 
+#define PIN_ZIGBEE_TX	GPIO_Pin_12
+#define PIN_ZIGBEE_RX	GPIO_Pin_2
+
+#define PIN_LED_AUX				GPIO_Pin_12
+#define PIN_LED_MANAGE			GPIO_Pin_13
+#define PIN_LED_PROGRAM			GPIO_Pin_14
+#define PIN_LED_PLAY			GPIO_Pin_15
 
 
 /*******************************************************************************
@@ -137,7 +144,7 @@ void GPIO_Configuration(void)
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	// PORTB CONFIG
-	GPIO_InitStructure.GPIO_Pin = 	PIN_ENABLE_TXD | PIN_ENABLE_RXD | ADC_6_PIN_SIG_MOT1P | ADC_6_PIN_SIG_MOT1M;
+	GPIO_InitStructure.GPIO_Pin = PIN_LED_AUX | PIN_LED_MANAGE | PIN_LED_PROGRAM | PIN_LED_PLAY	| PIN_ENABLE_TXD | PIN_ENABLE_RXD | ADC_6_PIN_SIG_MOT1P | ADC_6_PIN_SIG_MOT1M;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
@@ -171,6 +178,18 @@ void GPIO_Configuration(void)
 	GPIO_InitStructure.GPIO_Pin =  PIN_ADC1;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
 	GPIO_Init(PORT_ADC1, &GPIO_InitStructure);
+
+	// PORTC - Zigbee
+	GPIO_InitStructure.GPIO_Pin =  PIN_ZIGBEE_TX;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+	// PORTD CONFIG (Zigbee)
+	GPIO_InitStructure.GPIO_Pin = PIN_ZIGBEE_RX;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
 
 
 }
