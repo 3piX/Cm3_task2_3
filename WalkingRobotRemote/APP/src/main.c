@@ -116,11 +116,13 @@ int main(void)
 		{
 			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
 			zigbeeTxWord(((0x31)<<8)|(0x0D));
+			ZGB_RX_com_buf[0] = 0;
 		}
 		else if (ZGB_RX_com_buf[0] == '2')
 		{
 			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
 			zigbeeTxWord(((0x32)<<8)|(0x0D));
+			ZGB_RX_com_buf[0] = 0;
 		}
 
 		uDelay(10);
