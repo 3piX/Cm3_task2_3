@@ -152,8 +152,7 @@ void turnLeftOnSpot(u16 speed)
 	mDelay(100);
 
 	// Move to position for next step
-	DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI+135);
-	DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI+135);
+	turnStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, 135);
 	mDelay(300);
 
 	// Set down legs
@@ -178,7 +177,7 @@ void turnRightOnSpot(u16 speed)
 	mDelay(100);
 
 	// Move to position for next step
-	turnStep(LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135)
+	turnStep(LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135);
 	mDelay(300);
 
 	// Set down legs
