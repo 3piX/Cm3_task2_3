@@ -105,8 +105,8 @@ int main(void)
 
 	init_ADC();
 
-	GPIO_SetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1P);
-	GPIO_ResetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1M);
+	GPIO_SetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1P);
+	GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1M);
 	mDelay(1000);
 
 	setWallTrackSide();
@@ -310,18 +310,13 @@ void setWallTrackSide()
 	set_IR_position(330);
 	set_IR_position(330);
 	mDelay(500);
-	ADCres_buf[0] = sampleADC(NUM_ADC4);
+	ADCres_buf[0] = sampleADC(NUM_ADC5);
 
 
-	set_IR_position(720);
-	set_IR_position(720);
-	mDelay(500);
-	ADCres_buf[1] = sampleADC(NUM_ADC4);
 
-	if(ADCres_buf[0] > ADCres_buf[1])
+	if(ADCres_buf[0] > 512)
 	{
 		wallTrackSide = WALL_TRACK_RIGHT;
-		set_IR_position(330);
 
 	}
 	else
