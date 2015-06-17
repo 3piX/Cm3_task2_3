@@ -11,9 +11,7 @@
 #include "MotorControl.h"
 #include "PC_Com.h"
 
-#define MOTOR_LEFT_ADD 					10
-#define MOTOR_RIGHT_ADD					9
-#define MOTOR_STEP						2
+#define MOTOR_STEP						9
 
 #define RIGHT_MOTOR_CORR 				45
 
