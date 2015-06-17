@@ -101,21 +101,16 @@ int main(void)
 
 
 
-//	Init_Timer2();
-//
-//	TxDString(" HELLO :)\n\r");
-//	DXL_RX_com_buf[14] = 0;
-//
-//	init_ADC();
-//
-//	GPIO_SetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1P);
-//	GPIO_ResetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1M);
-//	mDelay(1000);
-//
-//	setWallTrackSide();
-//	mDelay(1000);
-//
-//	move_forward(MAX_SPEED);
+	DXL_RX_com_buf[14] = 0;
+
+	init_ADC();
+
+	GPIO_SetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1P);
+	GPIO_ResetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1M);
+	mDelay(1000);
+
+	setWallTrackSide();
+	mDelay(1000);
 
 	initZigbee();
 
@@ -143,12 +138,20 @@ int main(void)
 
 			break;
 		case LEFT:
+
+			move_left(0);
+
+			break;
 		case LEFT_SPOT:
 
 			turnLeftOnSpot(0);
 
 			break;
 		case RIGHT:
+
+			move_right(0);
+
+			break;
 		case RIGHT_SPOT:
 
 			turnRightOnSpot(0);
@@ -158,23 +161,9 @@ int main(void)
 			break;
 		}
 
-//		if(ZGB_RX_com_buf[0] == '1')
-//		{
-//			move_forward(0);
-//
-//			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
-//			zigbeeTxWord(((0x31)<<8)|(0x0D));
-//			ZGB_RX_com_buf[0] = 0;
-//		}
-//		else if (ZGB_RX_com_buf[0] == '2')
-//		{
-//			turnLeftOnSpot(0);
-//			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
-//			zigbeeTxWord(((0x32)<<8)|(0x0D));
-//			ZGB_RX_com_buf[0] = 0;
-//		}
 
-		uDelay(100);
+
+		uDelay(10);
 
 // SIMPLE ORIENTATION BEHAVIOUR
 /*
@@ -321,13 +310,13 @@ void setWallTrackSide()
 	set_IR_position(330);
 	set_IR_position(330);
 	mDelay(500);
-	ADCres_buf[0] = sampleADC(NUM_ADC6);
+	ADCres_buf[0] = sampleADC(NUM_ADC4);
 
 
-	set_IR_position(698);
-	set_IR_position(698);
+	set_IR_position(720);
+	set_IR_position(720);
 	mDelay(500);
-	ADCres_buf[1] = sampleADC(NUM_ADC6);
+	ADCres_buf[1] = sampleADC(NUM_ADC4);
 
 	if(ADCres_buf[0] > ADCres_buf[1])
 	{
@@ -339,7 +328,7 @@ void setWallTrackSide()
 	{
 
 		wallTrackSide = WALL_TRACK_LEFT;
-		set_IR_position(698);
+		set_IR_position(720);
 
 	}
 }

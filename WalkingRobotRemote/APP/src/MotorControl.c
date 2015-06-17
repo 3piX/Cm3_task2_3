@@ -11,9 +11,7 @@
 #include "MotorControl.h"
 #include "PC_Com.h"
 
-#define MOTOR_LEFT_ADD 					10
-#define MOTOR_RIGHT_ADD					9
-#define MOTOR_STEP						2
+#define MOTOR_STEP						9
 
 #define RIGHT_MOTOR_CORR 				45
 
@@ -26,22 +24,27 @@
 #define	RIGHT_BACK_TOP_MOTOR			2
 #define RIGHT_BACK_BOT_MOTOR 			7
 
-#define LEFT_FRONT_TOP_MOTOR_INI		299
+#define LEFT_FRONT_TOP_MOTOR_INI		250//369
 #define LEFT_FRONT_BOT_MOTOR_INI		376
-#define	RIGHT_FRONT_TOP_MOTOR_INI		703
+#define	RIGHT_FRONT_TOP_MOTOR_INI		750//633
 #define RIGHT_FRONT_BOT_MOTOR_INI		646
-#define	LEFT_BACK_TOP_MOTOR_INI			299
+#define	LEFT_BACK_TOP_MOTOR_INI			250//369
 #define LEFT_BACK_BOT_MOTOR_INI			646
-#define	RIGHT_BACK_TOP_MOTOR_INI		703
+#define	RIGHT_BACK_TOP_MOTOR_INI		750//633
 #define RIGHT_BACK_BOT_MOTOR_INI		376
 
 #define RL_FRONT_BACK_BOT_MOTOR_INI 	646
 #define RL_BACK_FRONT_BOT_MOTOR_INI 	376
-#define LEFT_TOP_MOTOR_INI				299
-#define RIGHT_TOP_MOTOR_INI				703
+#define LEFT_TOP_MOTOR_INI				250
+#define RIGHT_TOP_MOTOR_INI				750
 
-#define HIGH_DELAY						200
-#define LOW_DELAY						75
+/* delay constants */
+#define HIGH_DELAY						100
+#define LOW_DELAY						70
+
+/* movement constants */
+#define LIFT							130
+#define MOV								185
 
 u16 old_speed = MAX_SPEED;
 
@@ -84,53 +87,125 @@ void move_forward(u16 speed)
 {
 	// Lift two legs!
 
-	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, 110);
+			liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, LIFT);
 
-	mDelay(LOW_DELAY);
+			mDelay(LOW_DELAY);
 
-	// Take a right step (1)
-	takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135, 1);
+			// Take a right step (1)
+			takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, MOV, 1);
 
-	//DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI-135);
-	//DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI);
+			//DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI-MOV);
+			//DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI);
 
-	mDelay(HIGH_DELAY);
+			mDelay(HIGH_DELAY);
 
-	// set down legs
-	setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
+			// set down legs
+			setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
 
-	mDelay(LOW_DELAY);
+			mDelay(HIGH_DELAY);
 
-	// Lift two legs!
-	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, 110);
+			// Lift two legs!
+			liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, LIFT);
 
-	mDelay(LOW_DELAY);
+			mDelay(LOW_DELAY);
 
-	// Take a left step (0)
-	takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135, 0);
+			// Take a left step (0)
+			takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, MOV, 0);
 
-	mDelay(HIGH_DELAY);
+			mDelay(HIGH_DELAY);
 
 
-	// sit down legs
-	setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
+			// sit down legs
+			setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
 
-	mDelay(LOW_DELAY);
-}
+			mDelay(LOW_DELAY);
+
+
+
+
+	}
 
 void move_backward(u16 speed)
-{
+	{
+	// Lift two legs!
+
+			liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, LIFT);
+
+			mDelay(LOW_DELAY);
+
+			// Take a right step (1)
+			takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, MOV, 1);
+
+			//DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI-MOV);
+			//DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI);
+
+			mDelay(HIGH_DELAY);
+
+			// set down legs
+			setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
+
+			mDelay(HIGH_DELAY);
+
+			// Lift two legs!
+			liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, LIFT);
+
+			mDelay(LOW_DELAY);
+
+			// Take a left step (0)
+			takeStep(LEFT_BACK_BOT_MOTOR, RIGHT_FRONT_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, MOV, 0);
+
+			mDelay(HIGH_DELAY);
 
 
+			// sit down legs
+			setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
+
+			mDelay(LOW_DELAY);
 
 }
 
 void move_left(u16 speed)
 {
+	// Lift two legs!
+
+		liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, LIFT);
+
+		mDelay(LOW_DELAY);
+
+		// Take a right step (1)
+		DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI - MOV/2);
+		DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI);
 
 
+		DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI + MOV/2);
+		DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI);
+
+		mDelay(HIGH_DELAY);
+
+		// set down legs
+		setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
+
+		mDelay(HIGH_DELAY);
+
+		// Lift two legs!
+		liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, LIFT);
+
+		mDelay(LOW_DELAY);
+
+		// Take a left step (0)
+		DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI );
+		DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI - MOV);
 
 
+		DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI);
+		DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI + MOV);
+		mDelay(HIGH_DELAY);
+
+
+		// sit down legs
+		setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
+
+		mDelay(LOW_DELAY);
 
 
 }
@@ -138,11 +213,46 @@ void move_left(u16 speed)
 void move_right(u16 speed)
 {
 
+	// Lift two legs!
+
+			liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, LIFT);
+
+			mDelay(LOW_DELAY);
+
+			// Take a right step (1)
+			DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI - MOV);
+			DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI );
 
 
+			DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI + MOV);
+			DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI );
+
+			mDelay(HIGH_DELAY);
+
+			// set down legs
+			setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
+
+			mDelay(HIGH_DELAY);
+
+			// Lift two legs!
+			liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, LIFT);
+
+			mDelay(LOW_DELAY);
+
+			// Take a left step (0)
+			DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI );
+			DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI - MOV/2);
 
 
+			DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI);
+			DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI + MOV/2);
+			mDelay(HIGH_DELAY);
 
+
+			// sit down legs
+			setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
+
+			mDelay(LOW_DELAY);
 }
 
 void move_break()
@@ -161,7 +271,7 @@ void turnLeftOnSpot(u16 speed)
 	mDelay(LOW_DELAY);
 
 	// lift legs
-	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, 110);
+	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, LIFT);
 	mDelay(LOW_DELAY);
 
 	// Move to position for next step
@@ -171,14 +281,14 @@ void turnLeftOnSpot(u16 speed)
 
 	// Set down legs
 	setDownLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR);
-	mDelay(LOW_DELAY);
+	mDelay(HIGH_DELAY);
 
 	// Lift legs
-	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, 110);
+	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, LIFT);
 	mDelay(LOW_DELAY);
 
 	// take step
-	turnStep(RIGHT_FRONT_BOT_MOTOR, LEFT_BACK_BOT_MOTOR, -135, 1);
+	turnStep(RIGHT_FRONT_BOT_MOTOR, LEFT_BACK_BOT_MOTOR, -MOV, 1);
 	//DXL_send_word(LEFT_BACK_BOT_MOTOR, GOAL_POSITION_L, LEFT_BACK_BOT_MOTOR_INI-135);
 	//DXL_send_word(RIGHT_FRONT_BOT_MOTOR, GOAL_POSITION_L, RIGHT_FRONT_BOT_MOTOR_INI-135);
 
@@ -195,11 +305,11 @@ void turnRightOnSpot(u16 speed)
 	mDelay(LOW_DELAY);
 
 	// lift legs
-	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, 110);
+	liftUpLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR, LIFT);
 	mDelay(LOW_DELAY);
 
 	// Move to position for next step
-//	turnStep(LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, 135);
+//	turnStep(LEFT_FRONT_BOT_MOTOR, RIGHT_BACK_BOT_MOTOR, MOV);
 
 	DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI);
 	DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI);
@@ -208,14 +318,14 @@ void turnRightOnSpot(u16 speed)
 
 	// Set down legs
 	setDownLegs(LEFT_FRONT_TOP_MOTOR, RIGHT_BACK_TOP_MOTOR);
-	mDelay(LOW_DELAY);
+	mDelay(HIGH_DELAY);
 
 	// Lift legs
-	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, 110);
+	liftUpLegs(LEFT_BACK_TOP_MOTOR, RIGHT_FRONT_TOP_MOTOR, LIFT);
 	mDelay(LOW_DELAY);
 
 	// take step
-	turnStep(RIGHT_BACK_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, 135, 0);
+	turnStep(RIGHT_BACK_BOT_MOTOR, LEFT_FRONT_BOT_MOTOR, MOV, 0);
 	//DXL_send_word(RIGHT_BACK_BOT_MOTOR, GOAL_POSITION_L, RIGHT_BACK_BOT_MOTOR_INI+135);
 	//DXL_send_word(LEFT_FRONT_BOT_MOTOR, GOAL_POSITION_L, LEFT_FRONT_BOT_MOTOR_INI+135);
 
