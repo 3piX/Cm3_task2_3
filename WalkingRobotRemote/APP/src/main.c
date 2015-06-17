@@ -143,12 +143,20 @@ int main(void)
 
 			break;
 		case LEFT:
+
+			move_left(0);
+
+			break;
 		case LEFT_SPOT:
 
 			turnLeftOnSpot(0);
 
 			break;
 		case RIGHT:
+
+			move_right(0);
+
+			break;
 		case RIGHT_SPOT:
 
 			turnRightOnSpot(0);
@@ -174,7 +182,7 @@ int main(void)
 //			ZGB_RX_com_buf[0] = 0;
 //		}
 
-		uDelay(100);
+		uDelay(10);
 
 // SIMPLE ORIENTATION BEHAVIOUR
 /*
