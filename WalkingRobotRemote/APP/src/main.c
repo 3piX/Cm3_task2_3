@@ -21,6 +21,8 @@
 
 #include "ADC.h"
 
+#define AUTO
+
 #define FORWARD						0x77 //"w"
 #define BACKWARD					0x73 //"s"
 #define LEFT						0x61 //"a"
@@ -29,12 +31,8 @@
 #define LEFT_SPOT					0x6A //"j"
 #define RIGHT_SPOT					0x6B //"k"
 
-#define IR_SENSOR_RIGHT				2
-#define IR_SENSOR_RIGHT_front		3
 #define IR_SENSOR_FRONT				1
-#define IR_SENSOR_LEFT_front		0
-#define IR_SENSOR_LEFT				4
-#define IR_LONG_DIST				5
+#define IR_LONG_DIST				2
 
 #define	WALL_TRACK_RIGHT			0
 #define	WALL_TRACK_LEFT				1
@@ -109,19 +107,21 @@ int main(void)
 	GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1M);
 	mDelay(1000);
 
+	init_motors();
+	init_motors();
+	init_motors();
 	setWallTrackSide();
 	mDelay(1000);
 
 	initZigbee();
 
-	init_motors();
-	init_motors();
-	init_motors();
 
 
 
 	while(1)
 	{
+
+#ifndef AUTO
 		switch(ZGB_RX_com_buf[0])
 		{
 		case FORWARD:
@@ -164,83 +164,68 @@ int main(void)
 
 
 		uDelay(10);
+#else
 
+#endif
 // SIMPLE ORIENTATION BEHAVIOUR
-/*
 
-		for (j = 0; j<6; j++)
+
+		for (j = 0; j<3; j++)
 		{
-			ADCres_buf[j] = (sampleADC(NUM_ADC1+j)+sampleADC(NUM_ADC1+j) + sampleADC(NUM_ADC1+j)+sampleADC(NUM_ADC1+j))>>2;
+			ADCres_buf[j] = (sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j) + sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j))>>2;
 
 		}
-
+		TxDWord16(sampleADC(NUM_ADC3));
+		TxDByte_PC("\r");
 		if(ADCres_buf[IR_SENSOR_FRONT] > 0)
 		{
-			move_break();
 
-			mDelay(300);
-
-		while((sampleADC(IR_SENSOR_FRONT) + sampleADC(IR_SENSOR_FRONT) + sampleADC(IR_SENSOR_FRONT)+sampleADC(IR_SENSOR_FRONT))>>2){	
+		while((sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2)+sampleADC(IR_SENSOR_FRONT+2))>>2){
 
 
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 				{
-					turnLeftOnSpot(700);
+					turnLeftOnSpot(0);
 				}
 				else
 				{
-					turnRightOnSpot(700);
+					turnRightOnSpot(0);
 				}
 
-				mDelay(50);
-				
-				move_break();
-
-				mDelay(150);
 			}
 
-			move_forward(800);
-
 		}
-		else if((ADCres_buf[IR_SENSOR_RIGHT] >ADCres_buf[IR_SENSOR_LEFT]) || (ADCres_buf[IR_SENSOR_RIGHT_front] > ADCres_buf[IR_SENSOR_LEFT_front]))
-		{
-			move_left(((ADCres_buf[IR_SENSOR_RIGHT] - ADCres_buf[IR_SENSOR_LEFT])) + (((ADCres_buf[IR_SENSOR_RIGHT_front]-ADCres_buf[IR_SENSOR_LEFT_front]))*6) + ADCres_buf[IR_SENSOR_RIGHT_front]*8);
-		}
-		else if((ADCres_buf[IR_SENSOR_LEFT] > ADCres_buf[IR_SENSOR_RIGHT]) || (ADCres_buf[IR_SENSOR_LEFT_front] > ADCres_buf[IR_SENSOR_RIGHT_front]) )
-		{
-			move_right(((ADCres_buf[IR_SENSOR_LEFT] - ADCres_buf[IR_SENSOR_RIGHT])) + (((ADCres_buf[IR_SENSOR_LEFT_front]-ADCres_buf[IR_SENSOR_RIGHT_front]))*6) + ADCres_buf[IR_SENSOR_RIGHT_front]*8);
-		}
-		else if(ADCres_buf[IR_LONG_DIST] >= 850)//Wall track
+		else if(ADCres_buf[IR_LONG_DIST] >= 750)//Wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_left((ADCres_buf[IR_LONG_DIST]-805));
+				move_left(0);
 			}
 			else
 			{
-				move_right((ADCres_buf[IR_LONG_DIST]-805));
+				move_right(0);
 			}
 			
 		}
-		else if(ADCres_buf[IR_LONG_DIST] <= 700) // wall track
+		else if(ADCres_buf[IR_LONG_DIST] <= 550) // wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_right((745-(ADCres_buf[IR_LONG_DIST])));
+				move_right(0);
 			}
 			else
 			{
-				move_left((745-(ADCres_buf[IR_LONG_DIST])));
+				move_left(0);
 			}
 			
 		}
 		else
 		{
-			move_forward(MAX_SPEED);
+			move_forward(0);
 		}
 
 		uDelay(10);
-*/
+
 
 	}
 
@@ -307,8 +292,8 @@ void startIRsweep()
 
 void setWallTrackSide()
 {
-	set_IR_position(330);
-	set_IR_position(330);
+	set_IR_position(250);
+	set_IR_position(250);
 	mDelay(500);
 	ADCres_buf[0] = sampleADC(NUM_ADC5);
 
@@ -323,7 +308,7 @@ void setWallTrackSide()
 	{
 
 		wallTrackSide = WALL_TRACK_LEFT;
-		set_IR_position(720);
+		set_IR_position(800);
 
 	}
 }

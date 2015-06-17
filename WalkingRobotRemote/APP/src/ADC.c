@@ -246,7 +246,7 @@ void init_ADC()
 
 u16 isZero(u16 ADCres){
 
-	if(ADCres > 75){
+	if(ADCres > 30){
 		return ADCres;
 	}
 	else{
