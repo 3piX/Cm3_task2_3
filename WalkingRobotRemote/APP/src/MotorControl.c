@@ -361,8 +361,8 @@ void takeStep(u8 motor1, u8 motor2, u8 motor3, u8 motor4, u8 value, u8 side)
 		//DXL_send_word(motor1, GOAL_POSITION_L, botMotorIni);
 		//DXL_send_word(motor2, GOAL_POSITION_L, botMotorIni + value);
 
-		DXL_send_word(motor3, GOAL_POSITION_L, getBackFrontBotIni + value);
-		DXL_send_word(motor4, GOAL_POSITION_L, getBackFrontBotIni);
+		DXL_send_word(motor3, GOAL_POSITION_L, botBackFrontMotorIni + value);
+		DXL_send_word(motor4, GOAL_POSITION_L, botBackFrontMotorIni);
 
 		//DXL_send_word(motor3, GOAL_POSITION_L, botMotorIni);
 		//DXL_send_word(motor4, GOAL_POSITION_L, botMotorIni - value);
@@ -373,8 +373,8 @@ void takeStep(u8 motor1, u8 motor2, u8 motor3, u8 motor4, u8 value, u8 side)
 		DXL_send_word(motor2, GOAL_POSITION_L, botFrontBackMotorIni - value);
 
 
-		DXL_send_word(motor3, GOAL_POSITION_L, getBackFrontBotIni);
-		DXL_send_word(motor4, GOAL_POSITION_L, getBackFrontBotIni + value);
+		DXL_send_word(motor3, GOAL_POSITION_L, botBackFrontMotorIni);
+		DXL_send_word(motor4, GOAL_POSITION_L, botBackFrontMotorIni + value);
 
 
 //		DXL_send_word(motor1, GOAL_POSITION_L, botMotorIni + value);
