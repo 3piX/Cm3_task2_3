@@ -388,10 +388,12 @@ void takeStep(u8 motor1, u8 motor2, u8 motor3, u8 motor4, u8 value, u8 side)
 
 void turnStep(u8 motor1, u8 motor2, u8 value, u8 side)
 {
+	int botMotorIni = 0;
+	
 	if(side == 1)
-		int botMotorIni = getFrontBackBotIni();
+		botMotorIni = getFrontBackBotIni();
 	else
-		int botMotorIni = getBackFrontBotIni();
+		botMotorIni = getBackFrontBotIni();
 	
 	DXL_send_word(motor1, GOAL_POSITION_L, botMotorIni + value);
 	DXL_send_word(motor2, GOAL_POSITION_L, botMotorIni + value);
