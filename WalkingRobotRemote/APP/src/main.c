@@ -21,6 +21,14 @@
 
 #include "ADC.h"
 
+#define FORWARD						0x77 //"w"
+#define BACKWARD					0x73 //"s"
+#define LEFT						0x61 //"a"
+#define RIGHT						0x64 //"d"
+
+#define LEFT_SPOT					0x6A //"j"
+#define RIGHT_SPOT					0x6B //"k"
+
 #define IR_SENSOR_RIGHT				2
 #define IR_SENSOR_RIGHT_front		3
 #define IR_SENSOR_FRONT				1
@@ -119,24 +127,54 @@ int main(void)
 
 	while(1)
 	{
-
-		if(ZGB_RX_com_buf[0] == '1')
+		switch(ZGB_RX_com_buf[0])
 		{
+		case FORWARD:
+
+
 			move_forward(0);
 
-			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
-			zigbeeTxWord(((0x31)<<8)|(0x0D));
-			ZGB_RX_com_buf[0] = 0;
-		}
-		else if (ZGB_RX_com_buf[0] == '2')
-		{
+
+			break;
+		case BACKWARD:
+
+			move_backward(0);
+
+
+			break;
+		case LEFT:
+		case LEFT_SPOT:
+
 			turnLeftOnSpot(0);
-			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
-			zigbeeTxWord(((0x32)<<8)|(0x0D));
-			ZGB_RX_com_buf[0] = 0;
+
+			break;
+		case RIGHT:
+		case RIGHT_SPOT:
+
+			turnRightOnSpot(0);
+
+			break;
+		default:
+			break;
 		}
 
-		uDelay(10);
+//		if(ZGB_RX_com_buf[0] == '1')
+//		{
+//			move_forward(0);
+//
+//			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
+//			zigbeeTxWord(((0x31)<<8)|(0x0D));
+//			ZGB_RX_com_buf[0] = 0;
+//		}
+//		else if (ZGB_RX_com_buf[0] == '2')
+//		{
+//			turnLeftOnSpot(0);
+//			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
+//			zigbeeTxWord(((0x32)<<8)|(0x0D));
+//			ZGB_RX_com_buf[0] = 0;
+//		}
+
+		uDelay(100);
 
 // SIMPLE ORIENTATION BEHAVIOUR
 /*
@@ -237,7 +275,6 @@ void __TIM2_ISR()
 		{
 			ADCres_buf[ADCres_buf_index] =sampleADC(NUM_ADC6);// ((sampleADC(NUM_ADC6) + sampleADC(NUM_ADC6))>>1) + ((sampleADC(NUM_ADC6) + sampleADC(NUM_ADC6))>>1);
 
-
 			if(sweepDirection == 0)
 			{
 				set_IR_position(count);
@@ -273,18 +310,7 @@ void startIRsweep()
 	IRsweepDone = 0;
 	ADCres_buf_index = 0;
 
-//	if(sweepDirection == 0)
-//	{
-//		sweepDirection = 1;
-//		count = 814;
-//		//set_IR_position(214);
-//	}
-//	else
-//	{
-//		count = 214;
-//		sweepDirection = 0;
-//		//set_IR_position(814);
-//	}
+
 	TIM2->CNT = 0;
 	TIM2->CR1 = TIM_CR1_CEN; // ENABLE TIMER!
 
