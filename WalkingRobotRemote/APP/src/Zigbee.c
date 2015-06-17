@@ -7,6 +7,7 @@
  */
 
 #include "stm32f10x_lib.h"
+#include "Zigbee.h"
 
 #define	PORT_ZIGBEE_RESET	GPIOA
 #define	PIN_ZIGBEE_RESET	GPIO_Pin_12
