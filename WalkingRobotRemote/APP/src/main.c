@@ -107,8 +107,6 @@ int main(void)
 	init_motors();
 	init_motors();
 	init_motors();
-	setWallTrackSide();
-	mDelay(1000);
 
 	initZigbee();
 
@@ -166,7 +164,7 @@ int main(void)
 #endif
 // SIMPLE ORIENTATION BEHAVIOUR
 
-
+		/*
 		for (j = 0; j<3; j++)
 		{
 			ADCres_buf[j] = (sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j) + sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j))>>2;
@@ -225,7 +223,7 @@ int main(void)
 		{
 			move_forward(0);
 		}
-
+		*/
 		uDelay(10);
 
 

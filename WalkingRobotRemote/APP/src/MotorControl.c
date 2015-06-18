@@ -127,7 +127,7 @@ void move_forward(u16 speed)
 
 			mDelay(LOW_DELAY);
 	}
-
+	
 void move_backward(u16 speed)
 	{
 	// Lift two legs!
