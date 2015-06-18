@@ -107,8 +107,9 @@ int main(void)
 	init_motors();
 	init_motors();
 	init_motors();
+#ifdef AUTO
 	setWallTrackSide();
-
+#endif
 	initZigbee();
 
 
@@ -123,34 +124,34 @@ int main(void)
 		case FORWARD:
 
 
-			move_forward(0);
+			move_forward(2);
 
 
 			break;
 		case BACKWARD:
 
-			move_backward(0);
+			move_backward(2);
 
 
 			break;
 		case LEFT:
 
-			move_left(0);
+			move_left(2);
 
 			break;
 		case LEFT_SPOT:
 
-			turnLeftOnSpot(0);
+			turnLeftOnSpot(2);
 
 			break;
 		case RIGHT:
 
-			move_right(0);
+			move_right(2);
 
 			break;
 		case RIGHT_SPOT:
 
-			turnRightOnSpot(0);
+			turnRightOnSpot(2);
 
 			break;
 		default:
@@ -162,7 +163,7 @@ int main(void)
 		uDelay(10);
 #else
 
-#endif
+
 // SIMPLE ORIENTATION BEHAVIOUR
 
 
@@ -234,8 +235,9 @@ int main(void)
 
 		uDelay(10);
 
-
+#endif
 	}
+
 
 	return 0;
 }
