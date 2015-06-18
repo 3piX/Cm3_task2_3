@@ -65,6 +65,7 @@ u16 							diff = 0;
 u8								wallTrackSide = 0;
 u8								IRsweepDone, sweepDirection = 0;
 vu16								count = 214;
+u8								rightTrackOffset;
 float SCALE = 0.7f;
 
 void __ISR_DELAY(void);
@@ -102,13 +103,11 @@ int main(void)
 
 	GPIO_SetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1P);
 	GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1M);
-	mDelay(1000);
 
 	init_motors();
 	init_motors();
 	init_motors();
 	setWallTrackSide();
-	mDelay(1000);
 
 	initZigbee();
 
@@ -172,12 +171,21 @@ int main(void)
 			ADCres_buf[j] = (sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j) + sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j))>>2;
 
 		}
+
+
+			if(ADCres_buf[IR_LONG_DIST] > rightTrackOffset)
+			{
+				ADCres_buf[IR_LONG_DIST] -= rightTrackOffset;
+			}
+			else
+			{
+				ADCres_buf[IR_LONG_DIST] = 0;
+			}
+
+
 		if(ADCres_buf[IR_SENSOR_FRONT] > 0)
 		{
 			move_backward(0);
-
-		//while((sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2)+sampleADC(IR_SENSOR_FRONT+2))>>2){
-
 
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 				{
@@ -190,34 +198,32 @@ int main(void)
 					turnRightOnSpot(0);
 				}
 
-			//}
-
 		}
-		else if(ADCres_buf[IR_LONG_DIST] >= 475)//Wall track
+		else if(ADCres_buf[IR_LONG_DIST] >= 420)//Wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_left(3);
-				//move_left((ADCres_buf[IR_LONG_DIST]/100 - 3));
+				//move_left(3);
+				move_left((ADCres_buf[IR_LONG_DIST]/300));
 			}
 			else
 			{
-				move_right(3);
-				//move_right((ADCres_buf[IR_LONG_DIST]/100 - 3));
+				//move_right(3);
+				move_right((ADCres_buf[IR_LONG_DIST]/300));
 			}
 			
 		}
-		else if(ADCres_buf[IR_LONG_DIST] <= 400) // wall track
+		else if(ADCres_buf[IR_LONG_DIST] <= 350) // wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_right(3);
-				//
+				move_right((4-(ADCres_buf[IR_LONG_DIST]/100)));
+				//move_right(3);
 			}
 			else
 			{
-				move_left(3);
-				//
+				move_left(4-(ADCres_buf[IR_LONG_DIST]/100));
+				//move_left(3);
 			}
 			
 		}
@@ -245,32 +251,7 @@ void __TIM2_ISR()
 		TIM2->SR &= ~TIM_IT_CC1;
 		TIM2->CNT = 0;
 
-		//DXL_read_byte(2,MOVING); // If sweep is done (Motor is not moving)
-
-		if(1)//!(DXL_RX_com_buf[5]&0x01)) // disable intterupt
-		{
-			ADCres_buf[ADCres_buf_index] =sampleADC(NUM_ADC6);// ((sampleADC(NUM_ADC6) + sampleADC(NUM_ADC6))>>1) + ((sampleADC(NUM_ADC6) + sampleADC(NUM_ADC6))>>1);
-
-			if(sweepDirection == 0)
-			{
-				set_IR_position(count);
-				count += 60;
-			}
-			else
-			{
-				set_IR_position(count);
-				count -= 60;
-			}
-
-			if(count >=814 || count <= 214)
-			{
-				TIM2->CR1 &= ~TIM_CR1_CEN;
-				IRsweepDone = 1;
-				sweepDirection ^= 0x01;
-			}
-		}
-
-
+		TIM2->CR1 &= ~TIM_CR1_CEN;
 	}
 }
 
@@ -294,16 +275,16 @@ void startIRsweep()
 
 void setWallTrackSide()
 {
-	set_IR_position(330);
-	set_IR_position(330);
+	set_IR_position(350);
 	mDelay(500);
 	ADCres_buf[0] = sampleADC(NUM_ADC5);
 
 
 
-	if(ADCres_buf[0] > 512)
+	if(ADCres_buf[0] > 400)
 	{
 		wallTrackSide = WALL_TRACK_RIGHT;
+		rightTrackOffset = 150;
 
 	}
 	else
@@ -311,6 +292,7 @@ void setWallTrackSide()
 
 		wallTrackSide = WALL_TRACK_LEFT;
 		set_IR_position(720);
+		rightTrackOffset = 0;
 
 	}
 }
