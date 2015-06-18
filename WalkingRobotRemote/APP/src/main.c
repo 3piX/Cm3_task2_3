@@ -76,11 +76,8 @@ void setWallTrackSide();
 
 int main(void)
 {
-	s16 i = 0;
-	u16 tempADCres, j = 0, k = 0;
-	u16 sum, avg;
-	float hans;
-	double bo;
+
+	u16 j = 0;
     /* System Clocks Configuration */
 	RCC_Configuration();
 
@@ -175,47 +172,52 @@ int main(void)
 			ADCres_buf[j] = (sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j) + sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j))>>2;
 
 		}
-		TxDWord16(sampleADC(NUM_ADC3));
-		TxDByte_PC("\r");
 		if(ADCres_buf[IR_SENSOR_FRONT] > 0)
 		{
+			move_backward(0);
 
-		while((sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2)+sampleADC(IR_SENSOR_FRONT+2))>>2){
+		//while((sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2)+sampleADC(IR_SENSOR_FRONT+2))>>2){
 
 
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 				{
 					turnLeftOnSpot(0);
+					turnLeftOnSpot(0);
 				}
 				else
 				{
 					turnRightOnSpot(0);
+					turnRightOnSpot(0);
 				}
 
-			}
+			//}
 
 		}
-		else if(ADCres_buf[IR_LONG_DIST] >= 750)//Wall track
+		else if(ADCres_buf[IR_LONG_DIST] >= 475)//Wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_left(0);
+				move_left(3);
+				//move_left((ADCres_buf[IR_LONG_DIST]/100 - 3));
 			}
 			else
 			{
-				move_right(0);
+				move_right(3);
+				//move_right((ADCres_buf[IR_LONG_DIST]/100 - 3));
 			}
 			
 		}
-		else if(ADCres_buf[IR_LONG_DIST] <= 550) // wall track
+		else if(ADCres_buf[IR_LONG_DIST] <= 400) // wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_right(0);
+				move_right(3);
+				//
 			}
 			else
 			{
-				move_left(0);
+				move_left(3);
+				//
 			}
 			
 		}
@@ -292,8 +294,8 @@ void startIRsweep()
 
 void setWallTrackSide()
 {
-	set_IR_position(250);
-	set_IR_position(250);
+	set_IR_position(330);
+	set_IR_position(330);
 	mDelay(500);
 	ADCres_buf[0] = sampleADC(NUM_ADC5);
 
@@ -308,7 +310,7 @@ void setWallTrackSide()
 	{
 
 		wallTrackSide = WALL_TRACK_LEFT;
-		set_IR_position(800);
+		set_IR_position(720);
 
 	}
 }

@@ -93,7 +93,7 @@ void TxWordArray(u16 *bData, u8 len)
 	int i;
 	for(i = 0; i<len; i++)
 	{
-		TxDWord16(bData);
+		TxDWord16((u16)(bData));
 		TxDByte_PC("\n");
 		TxDByte_PC("\r");
 		*bData+=1;
