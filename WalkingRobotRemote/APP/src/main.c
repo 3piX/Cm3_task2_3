@@ -21,12 +21,18 @@
 
 #include "ADC.h"
 
-#define IR_SENSOR_RIGHT				2
-#define IR_SENSOR_RIGHT_front		3
+#define AUTO
+
+#define FORWARD						0x77 //"w"
+#define BACKWARD					0x73 //"s"
+#define LEFT						0x61 //"a"
+#define RIGHT						0x64 //"d"
+
+#define LEFT_SPOT					0x6A //"j"
+#define RIGHT_SPOT					0x6B //"k"
+
 #define IR_SENSOR_FRONT				1
-#define IR_SENSOR_LEFT_front		0
-#define IR_SENSOR_LEFT				4
-#define IR_LONG_DIST				5
+#define IR_LONG_DIST				2
 
 #define	WALL_TRACK_RIGHT			0
 #define	WALL_TRACK_LEFT				1
@@ -70,11 +76,8 @@ void setWallTrackSide();
 
 int main(void)
 {
-	s16 i = 0;
-	u16 tempADCres, j = 0, k = 0;
-	u16 sum, avg;
-	float hans;
-	double bo;
+
+	u16 j = 0;
     /* System Clocks Configuration */
 	RCC_Configuration();
 
@@ -91,119 +94,138 @@ int main(void)
 
 	USART_Configuration(USART_PC, Baudrate_PC);
 
-//	Init_Timer2();
-//
-//	TxDString(" HELLO :)\n\r");
-//	DXL_RX_com_buf[14] = 0;
-//
-//	init_ADC();
-//
-//	GPIO_SetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1P);
-//	GPIO_ResetBits(ADC_6_PORT_SIG_MOT, ADC_6_PIN_SIG_MOT1M);
-//	mDelay(1000);
-//
-//	setWallTrackSide();
-//	mDelay(1000);
-//
-//	move_forward(MAX_SPEED);
+
+
+	DXL_RX_com_buf[14] = 0;
+
+	init_ADC();
+
+	GPIO_SetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1P);
+	GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1M);
+	mDelay(1000);
+
+	init_motors();
+	init_motors();
+	init_motors();
 
 	initZigbee();
-	init_motors();
+
+
+
 
 	while(1)
 	{
 
-		if(ZGB_RX_com_buf[0] == '1')
+#ifndef AUTO
+		switch(ZGB_RX_com_buf[0])
 		{
-			GPIO_ResetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
-			zigbeeTxWord(((0x31)<<8)|(0x0D));
-			ZGB_RX_com_buf[0] = 0;
+		case FORWARD:
+
+
+			move_forward(0);
+
+
+			break;
+		case BACKWARD:
+
+			move_backward(0);
+
+
+			break;
+		case LEFT:
+
+			move_left(0);
+
+			break;
+		case LEFT_SPOT:
+
+			turnLeftOnSpot(0);
+
+			break;
+		case RIGHT:
+
+			move_right(0);
+
+			break;
+		case RIGHT_SPOT:
+
+			turnRightOnSpot(0);
+
+			break;
+		default:
+			break;
 		}
-		else if (ZGB_RX_com_buf[0] == '2')
-		{
-			GPIO_SetBits(PORT_LED_PROGRAM, PIN_LED_PROGRAM);
-			zigbeeTxWord(((0x32)<<8)|(0x0D));
-			ZGB_RX_com_buf[0] = 0;
-		}
+
+
 
 		uDelay(10);
+#else
 
+#endif
 // SIMPLE ORIENTATION BEHAVIOUR
-/*
 
-		for (j = 0; j<6; j++)
+		/*
+		for (j = 0; j<3; j++)
 		{
-			ADCres_buf[j] = (sampleADC(NUM_ADC1+j)+sampleADC(NUM_ADC1+j) + sampleADC(NUM_ADC1+j)+sampleADC(NUM_ADC1+j))>>2;
+			ADCres_buf[j] = (sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j) + sampleADC(NUM_ADC3+j)+sampleADC(NUM_ADC3+j))>>2;
 
 		}
-
 		if(ADCres_buf[IR_SENSOR_FRONT] > 0)
 		{
-			move_break();
+			move_backward(0);
 
-			mDelay(300);
-
-		while((sampleADC(IR_SENSOR_FRONT) + sampleADC(IR_SENSOR_FRONT) + sampleADC(IR_SENSOR_FRONT)+sampleADC(IR_SENSOR_FRONT))>>2){	
+		//while((sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2) + sampleADC(IR_SENSOR_FRONT+2)+sampleADC(IR_SENSOR_FRONT+2))>>2){
 
 
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 				{
-					turnLeftOnSpot(700);
+					turnLeftOnSpot(0);
+					turnLeftOnSpot(0);
 				}
 				else
 				{
-					turnRightOnSpot(700);
+					turnRightOnSpot(0);
+					turnRightOnSpot(0);
 				}
 
-				mDelay(50);
-				
-				move_break();
-
-				mDelay(150);
-			}
-
-			move_forward(800);
+			//}
 
 		}
-		else if((ADCres_buf[IR_SENSOR_RIGHT] >ADCres_buf[IR_SENSOR_LEFT]) || (ADCres_buf[IR_SENSOR_RIGHT_front] > ADCres_buf[IR_SENSOR_LEFT_front]))
-		{
-			move_left(((ADCres_buf[IR_SENSOR_RIGHT] - ADCres_buf[IR_SENSOR_LEFT])) + (((ADCres_buf[IR_SENSOR_RIGHT_front]-ADCres_buf[IR_SENSOR_LEFT_front]))*6) + ADCres_buf[IR_SENSOR_RIGHT_front]*8);
-		}
-		else if((ADCres_buf[IR_SENSOR_LEFT] > ADCres_buf[IR_SENSOR_RIGHT]) || (ADCres_buf[IR_SENSOR_LEFT_front] > ADCres_buf[IR_SENSOR_RIGHT_front]) )
-		{
-			move_right(((ADCres_buf[IR_SENSOR_LEFT] - ADCres_buf[IR_SENSOR_RIGHT])) + (((ADCres_buf[IR_SENSOR_LEFT_front]-ADCres_buf[IR_SENSOR_RIGHT_front]))*6) + ADCres_buf[IR_SENSOR_RIGHT_front]*8);
-		}
-		else if(ADCres_buf[IR_LONG_DIST] >= 850)//Wall track
+		else if(ADCres_buf[IR_LONG_DIST] >= 475)//Wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_left((ADCres_buf[IR_LONG_DIST]-805));
+				move_left(3);
+				//move_left((ADCres_buf[IR_LONG_DIST]/100 - 3));
 			}
 			else
 			{
-				move_right((ADCres_buf[IR_LONG_DIST]-805));
+				move_right(3);
+				//move_right((ADCres_buf[IR_LONG_DIST]/100 - 3));
 			}
 			
 		}
-		else if(ADCres_buf[IR_LONG_DIST] <= 700) // wall track
+		else if(ADCres_buf[IR_LONG_DIST] <= 400) // wall track
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_right((745-(ADCres_buf[IR_LONG_DIST])));
+				move_right(3);
+				//
 			}
 			else
 			{
-				move_left((745-(ADCres_buf[IR_LONG_DIST])));
+				move_left(3);
+				//
 			}
 			
 		}
 		else
 		{
-			move_forward(MAX_SPEED);
+			move_forward(0);
 		}
-
+		*/
 		uDelay(10);
-*/
+
 
 	}
 
@@ -227,7 +249,6 @@ void __TIM2_ISR()
 		{
 			ADCres_buf[ADCres_buf_index] =sampleADC(NUM_ADC6);// ((sampleADC(NUM_ADC6) + sampleADC(NUM_ADC6))>>1) + ((sampleADC(NUM_ADC6) + sampleADC(NUM_ADC6))>>1);
 
-
 			if(sweepDirection == 0)
 			{
 				set_IR_position(count);
@@ -241,7 +262,7 @@ void __TIM2_ISR()
 
 			if(count >=814 || count <= 214)
 			{
-				TIM2->CR1 &= TIM_CR1_CEN;
+				TIM2->CR1 &= ~TIM_CR1_CEN;
 				IRsweepDone = 1;
 				sweepDirection ^= 0x01;
 			}
@@ -263,18 +284,7 @@ void startIRsweep()
 	IRsweepDone = 0;
 	ADCres_buf_index = 0;
 
-//	if(sweepDirection == 0)
-//	{
-//		sweepDirection = 1;
-//		count = 814;
-//		//set_IR_position(214);
-//	}
-//	else
-//	{
-//		count = 214;
-//		sweepDirection = 0;
-//		//set_IR_position(814);
-//	}
+
 	TIM2->CNT = 0;
 	TIM2->CR1 = TIM_CR1_CEN; // ENABLE TIMER!
 
@@ -285,25 +295,20 @@ void setWallTrackSide()
 	set_IR_position(330);
 	set_IR_position(330);
 	mDelay(500);
-	ADCres_buf[0] = sampleADC(NUM_ADC6);
+	ADCres_buf[0] = sampleADC(NUM_ADC5);
 
 
-	set_IR_position(698);
-	set_IR_position(698);
-	mDelay(500);
-	ADCres_buf[1] = sampleADC(NUM_ADC6);
 
-	if(ADCres_buf[0] > ADCres_buf[1])
+	if(ADCres_buf[0] > 512)
 	{
 		wallTrackSide = WALL_TRACK_RIGHT;
-		set_IR_position(330);
 
 	}
 	else
 	{
 
 		wallTrackSide = WALL_TRACK_LEFT;
-		set_IR_position(698);
+		set_IR_position(720);
 
 	}
 }

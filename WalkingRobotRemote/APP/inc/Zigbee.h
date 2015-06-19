@@ -11,7 +11,7 @@
 #include "stm32f10x_lib.h"
 
 void initZigbee();
-void zigbeeTxString(u8 *data);
+void zigbeeTxString(u16 *data);
 void zigbeeTxByte(u8 data);
 void zigbeeTxArray(u8 *data, u16 len);
 void __zigbeeRxISR();

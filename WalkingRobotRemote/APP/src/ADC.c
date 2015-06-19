@@ -152,8 +152,8 @@ u16 sampleADC(u8 ADCnum)
 
 			ADCres = (ADC_GetConversionValue(ADC1));
 			ADCres = isZero(ADCres);
-			GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1P);
-			GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1M);
+			//GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1P);
+			//GPIO_ResetBits(ADC_5_PORT_SIG_MOT, ADC_5_PIN_SIG_MOT1M);
 
 
 
@@ -246,7 +246,7 @@ void init_ADC()
 
 u16 isZero(u16 ADCres){
 
-	if(ADCres > 75){
+	if(ADCres > 30){
 		return ADCres;
 	}
 	else{
