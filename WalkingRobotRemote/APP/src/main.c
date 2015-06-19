@@ -21,7 +21,7 @@
 
 #include "ADC.h"
 
-#define AUTO
+//#define AUTO
 
 #define FORWARD						0x77 //"w"
 #define BACKWARD					0x73 //"s"
@@ -210,7 +210,7 @@ int main(void)
 			else
 			{
 				//move_right(3);
-				move_right((ADCres_buf[IR_LONG_DIST]/300));
+				move_right((ADCres_buf[IR_LONG_DIST]/400));
 			}
 			
 		}
@@ -218,12 +218,12 @@ int main(void)
 		{
 			if(wallTrackSide == WALL_TRACK_RIGHT)
 			{
-				move_right((4-(ADCres_buf[IR_LONG_DIST]/100)));
+				move_right((3-(ADCres_buf[IR_LONG_DIST]/175)));
 				//move_right(3);
 			}
 			else
 			{
-				move_left(4-(ADCres_buf[IR_LONG_DIST]/100));
+				move_left(3-(ADCres_buf[IR_LONG_DIST]/175));
 				//move_left(3);
 			}
 			
@@ -293,7 +293,7 @@ void setWallTrackSide()
 	{
 
 		wallTrackSide = WALL_TRACK_LEFT;
-		set_IR_position(720);
+		set_IR_position(760);
 		rightTrackOffset = 0;
 
 	}
