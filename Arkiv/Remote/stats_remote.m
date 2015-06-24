@@ -2,6 +2,19 @@ clear all
 close all
 clc
 
+lm1 = csvread('straight_mod.dat');
+lm2 = csvread('straight.dat');
+
+plot(lm1,'LineStyle','--','Color','k')
+hold on;
+plot(lm2,'LineStyle','--','Color','r');
+ylim([5 25])
+
+legend('Before optimisation','After optimisation')
+
+title('Time needed to travel 3.66m')
+xlabel('Sample no [#]')
+ylabel('Time [s]')
 
 %% Straight side run with original code
 clc
@@ -21,7 +34,7 @@ subplot(2,1,1)
 hist(lm,x)
 hold on
 plot(x,y,'LineWidth',2,'Color','r')
-title('Left side with original code')
+title('Straight with original code')
 
 xlabel('Time [s]')
 ylabel('Occurences [#]')
@@ -49,7 +62,9 @@ hist(lm,x)
 hold on
 plot(x,y,'LineWidth',2,'Color','r')
 line([pd.mu pd.mu],[0 3],'LineStyle','--','Color','k');
-title('Left side with modified code')
+
+title('Straight with modified code')
+
 
 xlabel('Time [s]')
 ylabel('Occurences [#]')
