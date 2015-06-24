@@ -1,0 +1,338 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"arm-",
+				"arm-none-eabi"
+			],
+			[
+				"take",
+				"takeStep"
+			],
+			[
+				"get",
+				"getFrontBackBotIni"
+			],
+			[
+				"lift",
+				"liftUpLegs"
+			],
+			[
+				"set",
+				"setDownLegs"
+			],
+			[
+				"lif",
+				"liftUpLegs"
+			],
+			[
+				"OS",
+				"OS"
+			],
+			[
+				"T",
+				"TCHAIN_PREFIX"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "s103045.html",
+			"settings":
+			{
+				"buffer_size": 5483,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/MotorControl.c",
+			"settings":
+			{
+				"buffer_size": 9621,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Makefile/Make.sublime-build",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/christian/Documents/Modular Robotics/Cm3_Task4/DrawingRbot/Makefile",
+		"/home/christian/Downloads/test/s103045/s103045.html",
+		"/home/christian/Downloads/test/sxxxxxxx/sxxxxxxx.html",
+		"/home/christian/Documents/Modular Robotics/test/test.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_Task4/DrawingRbot",
+		"/home/christian/Documents/Modular Robotics/Cm3_Task4/DrawingRbot/APP/src/main.c",
+		"/build/buildd/newlib-2.1.0/newlib/libm/math/wf_asin.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/MotorControl.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_Task4/.gitignore",
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotAtonomus/APP/src/main.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotAtonomus/APP/src/MotorControl.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/main.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/DXL.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/inc/MotorControl.h",
+		"/home/christian/Documents/Modular Robotics/Cm3_task1/WheeledRobotRemoteControlV1/APP/src/main.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task1/WheeledRobotRemoteControlV1/APP/src/MotorControl.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task1/WheeledRobotRemoteControlV1/APP/inc/DXLdef.h",
+		"/home/christian/Documents/Modular Robotics/Cm3_task1/WheeledRobotRemoteControlV1/APP/src/DXL.c",
+		"/home/christian/Documents/Modular Robotics/Cm3_task1/WheeledRobotRemoteControlV1/Makefile",
+		"/home/christian/Documents/Modular Robotics/test_c/test.c",
+		"/home/christian/Documents/Modular Robotics/test_c/Makefile",
+		"/home/christian/.profile",
+		"/home/christian/Downloads/PyPX4Flow-master/px4flow/mavlink_parser.py",
+		"/home/christian/Downloads/PyPX4Flow-master/px4flow/__init__.py",
+		"/home/christian/Downloads/PyPX4Flow-master/display/px4flow_display.py",
+		"/home/christian/Arduino/PX4_Flow/PosEstimate/PosEstimate.ino",
+		"/home/christian/teensy/CameraTest/test/test.ino",
+		"/home/christian/Downloads/EestMex.m",
+		"/home/christian/Downloads/EestMex.mexw64",
+		"/home/christian/Arduino/px4_test/test/Test/Test_ino/Test.ino",
+		"/home/christian/Arduino/px4_test/test/PX4Flow.cpp",
+		"/home/christian/Arduino/PX4_PosEst/PX4_PosEst.ino",
+		"/home/christian/Arduino/px4_test/px4_flow.ino/px4_flow.ino.ino",
+		"/home/christian/Arduino/px4_test/px4_test.ino",
+		"/home/christian/Arduino/px4_test/test/Test/Test.ino",
+		"/home/christian/Arduino/px4_test/integral_testing/integral_testing.ino",
+		"/home/christian/Arduino/libraries/mavlink/include/mavlink/v1.0/common/mavlink_msg_heartbeat.h",
+		"/home/christian/Flow-master/mavlink/include/mavlink/v1.0/common/testsuite.h",
+		"/home/christian/Flow-master/mavlink/include/mavlink/v1.0/common/mavlink_msg_optical_flow_rad.h",
+		"/home/christian/Flow-master/src/main.c",
+		"/home/christian/Flow-master/mavlink/share/mavlink/src/v1.0/pixhawk/pixhawk.pb.cc",
+		"/home/christian/Flow-master/src/i2c.c",
+		"/home/christian/Flow-master/inc/i2c_frame.h",
+		"/home/christian/Flow-master/Flow.sublime-project"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"nostdlib",
+			"CC",
+			"LD",
+			"CFLAGS",
+			"ld",
+			"HEAD",
+			"MOVING_SPEED_L",
+			"unpack",
+			"getFlowComp",
+			"FlowCompX",
+			"FlowCompXm",
+			"OPTICAL_FLOW",
+			"optical_flow",
+			"integrated",
+			"packet_in",
+			"mavlink_msg_optical_flow_rad_pack",
+			"integrated_x",
+			"qual",
+			"i2c"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "s103045.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5483,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4924,
+								4924
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1010.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/MotorControl.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9621,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7958,
+								7958
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4699.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 190.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "s103045.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 211.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

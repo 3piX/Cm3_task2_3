@@ -18,7 +18,7 @@ ylabel('Time [s]')
 
 %% Straight side run with original code
 clc
-lm = csvread('straight.dat');
+lm = csvread('Straight.dat');
 
 %normplot(lm)
 
@@ -45,7 +45,7 @@ hold off
 
 %% straight side run with modified code
 clc
-lm = csvread('straight_mod.dat');
+lm = csvread('Straight_mod.dat');
 
 %normplot(lm)
 
@@ -62,7 +62,9 @@ hist(lm,x)
 hold on
 plot(x,y,'LineWidth',2,'Color','r')
 line([pd.mu pd.mu],[0 3],'LineStyle','--','Color','k');
+
 title('Straight with modified code')
+
 
 xlabel('Time [s]')
 ylabel('Occurences [#]')
