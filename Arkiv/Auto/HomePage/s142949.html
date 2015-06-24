@@ -52,7 +52,7 @@ vehicle can be reused with very few changes, since for instance a function call 
 and the walking robot. 
 The only difference is the implementation of the function. The principle of the firmware structure is illustrated below:
 
-<center><img src="s142949_files/Robot.jpg" height='300px' style="margin-bottom:0;"/></center>
+<center><img src="s142949_files/Structure.png" height='300px' style="margin-bottom:0;"/></center>
 </div><div><center><b>Figure 3:</b> Firmware structure</center></div></div><br>
 
 As seen on the figure above the primary changes the the firmware when going from the vehicle to the walking robot is made to the second layer.<br><br>
@@ -68,12 +68,13 @@ This means that first the move forward functions has been implemented and tested
 afterwards the wall track functions has been implemented and tested, and finally the front obstical avoidance. <br><br>
 
 <b>The control firmware - The final controller</b><br>
--PICTURE: FLOWCHART <br>
+Below is a simplified flowchart of the controller firmware shown:
 
-<center><img src="s142949_files/Robot.jpg" height='300px' style="margin-bottom:0;"/></center>
+<center><img src="s142949_files/Ctrl_flowchart.png" height='570px' style="margin-bottom:0;"/></center>
 </div><div><center><b>Figure 5:</b> Flowchart showing the control priciple</center></div></div><br>
 
-
+Here it is very clear that the subsumption structure has been used, since the front sensor has the highest priority, followed by the wall track 
+functionality using the DMS sensor and finally comes the move forward functionality.
 
 <h2>Test results and optimisation</h2>
 Since the robot has been implemented using a subsumption structure, a lot of different tests and optimisations has ben made throughout the 
