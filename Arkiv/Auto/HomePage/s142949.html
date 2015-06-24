@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<h1>THE BEAST - Autonomous</h1>
+Responsible: Marc Matthiesen (s142949)<br>
+Group: CM3<br>
+Course: Modular Robotics (31384) in June 2015 
+<br>
+
+<iframe width=640 height=360
+ src="https://www.youtube.com/embed/Pv2I5Cxtw-8?feature=player_detailpage"
+ frameborder=0 allowfullscreen>
+</iframe>
+<br>
+
+
+<h2>Introduction</h2>
+The following is a brief descripition of the development of the autonomous walking robot. The robot has been developed as third part of the course Modular Robotics (31384), at DTU. <br>
+The robot design is based on the two previous designs; The physical design is identical to the one presented for the remote controlled walking robot, and the controller firmware is based on the firmware developed for the autonomous vehicle <br>
+Unlike the developed vehicle, the walking robot has only been equipted with a single long Distance Measurement Sensor, DMS and a single InfraRed sensor, IR. Compared with the autonomous wehicle designed in task 1 4 fewer IR sensors has been used to solve the maze. The reason for this choice is the fact that all 'static' obsticles was removed form the maze during the walking robot competitions.
+
+<h2>Control principle</h2>
+<b>The basic idea</b><br>
+The basic control idea of the robot is, like the autonomous vehicle, to create a 'wall tracking' robot. This means that the robot should follow which ever side wall is closest with a predetermined distance to the wall. 
+The principle isillustrated in figure 2 below:
+
+<center><img src="s142949_files/wallTrack.png" height='300px' style="margin-bottom:0;"/></center>
+</div><div><center><b>Figure 2:</b> Idea behind the controller</center></div></div><br>
+
+as illustrate above three functionalities is needed for the robot to perform as intended: <br>
+The first functionality isto identify wether the closest wall is locaed on the right or left side of the robot.
+This has been solved by placing the DMS on a motor. When the robot is started it looks at the right wall, and determines wether it is close 
+enough to follow, if not it follow the left wall. 
+The function is described in detail during the describtion of the controller firmware <br>
+The second funtionality needed is the actual wall tracking functionality. Here the robot will move closer to the wall if to far away and 
+further from the wall if to close. 
+This is done while the robot is moving forward.<br>
+The third and final functionality need is the 'turn on spot' functionality, illustrated by the red dots on the figure above. 
+The functionality is needed when the robot meets a sharp corner, turning to the oposite side a the wall tracking side.
+During the 'turn on spot' functionality the robot will stop its forward movement and move back a bit before turning ~90 degrees aorund 
+its own center axis. The 'turn on spot functionality is triggered when the IR sensor placed in the front of the robot detect a obsticle 
+within approximatly 10 cm.<br><br>
+
+
+<b>The control firmware - structure</b><br>
+Since the beginning of the firmware development of taks 1, the design has been focud on creating a firware structure with a high reuseability, 
+for the different tasks (Task 1 -3).
+This means that firmware has been constructed of 3 layers: first layer is the actual hardware interface drivers. 
+This is for instance the Dynamixel driver, ADC driver ETC.<br>
+The second layer is a abtractionlayer where for instace functionality for moving forward or sideways is implemented.<br>
+The third layer isthe actual controller, or "brain" of the robot, it is here sensor inputs are converted into actions. <br>
+Since the hardware is more or less the same for all tasks the layers of the firmware means that the controller from the autonomous 
+vehicle can be reused with very few changes, since for instance a function call to "move_forward()" is the same for both the vehicle 
+and the walking robot. 
+The only difference is the implementation of the function. The principle of the firmware structure is illustrated below:
+
+<center><img src="s142949_files/Robot.jpg" height='300px' style="margin-bottom:0;"/></center>
+</div><div><center><b>Figure 3:</b> Firmware structure</center></div></div><br>
+
+As seen on the figure above the primary changes the the firmware when going from the vehicle to the walking robot is made to the second layer.<br><br>
+
+<b>The control firmware - Implementation principle</b><br>
+In general the controller has been implemented using a subsumption structure, as it is seen below. Since the controller has been based on the 
+controller designed for the vehicle the control priciple is the same, however without using any side sensors, as the is no obsticals in 
+the maze:
+<center><img src="s142949_files/WalkingSubsumptionDiagram.png" height='300px' style="margin-bottom:0;"/></center>
+</div><div><center><b>Figure 4:</b> Subsumption structure of the controller</center></div></div><br>
+The subsumptive structure means that each of the functions shown in the picture above has been implemented and optimised seperatly. 
+This means that first the move forward functions has been implemented and tested untill the robot moved satefactory, 
+afterwards the wall track functions has been implemented and tested, and finally the front obstical avoidance. <br><br>
+
+<b>The control firmware - The final controller</b><br>
+-PICTURE: FLOWCHART <br>
+
+<center><img src="s142949_files/Robot.jpg" height='300px' style="margin-bottom:0;"/></center>
+</div><div><center><b>Figure 5:</b> Flowchart showing the control priciple</center></div></div><br>
+
+
+
+<h2>Test results and optimisation</h2>
+Since the robot has been implemented using a subsumption structure, a lot of different tests and optimisations has ben made throughout the 
+whole implementation of the controller firmware.<br>
+One of the optimisations that was made was to optimise the movement speed of the robot. This was done by increasing the distance each leg travels while on the ground.
+The distance was increased by ~13%, however meaning that each step would take approximately 13% longer. Even with the loger timer for each step
+is was possible to decrease the avaradge maze-completions time of the robot, as shown below:
+
+<center><img src="s142949_files/Measurements.jpg" height='500px' style="margin-bottom:0;"/></center>
+</div><div><center><b>Figure 6:</b> Testresults and optimisation</center></div></div><br>
+
+By increasing the distance each leg travels while on the ground by 13% it was possible to optimise the avarage completion time, when tracking 
+the left wall, from 41.7s with a standard deviation of 2.3s to 33.5s with a standard deveation of 1.8s. likewise when tracking the right will 
+is was possible to optimise the avarage completion time from 40.6s with a standard deviation of 1 s to 36.3s with a standard deviation of 1.3s.
+
+<h2>References</h2>
+<a href="http://www.DTU.dk/">DTU homepage</a><br>
+<a href="http://www.robotis.com/">Robotis homepage</a><br>
