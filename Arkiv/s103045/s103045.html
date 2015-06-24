@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<h1>The Beast - Remote Controlled</h1>
+Responsible: Christian Myrhøj (s103045)<br>
+Group: Cm3<br>
+Course: Modular Robotics (31384) in June 2015
+<br><br>
+<h2>Abstract</h2>
+In the video it can be seen that our robot completed the course by remote control. By using predefined positions of the legs the robot was able to walk in a stable manner. This included the motions of turning slight to the left and right, turning on the spot to the left and right, and moving backwards. In the following video below the movement of the remote controlled robot can be seen.
+<br><br>
+<div style="text-align: center">
+	<iframe width="640" height="390" src="https://www.youtube.com/embed/KldR2acs6Rs" frameborder="0" allowfullscreen></iframe>
+</div>
+<br>
+
+<h2>Introduction</h2>
+For this task the robot had to finish a course with no obsticals, had to be remote controlled, and be a walking type robot. The robot then had to compete in an challenge against another robot.
+
+<div><div style="text-align: center">
+<img src="s103045_files/Robot.jpg" height='300px' style="margin-bottom:0;"/>
+</div><div style="text-align: center"><b>Figure 1:</b> The Beast</div></div>
+
+<h2>Structure</h2>
+The structure of this robot is a spider-like build, where there is four legs supporting a small frame with the battery and controller. The legs all extend in 45 degrees angles from the frame and create stable platform. <br>
+Each leg is fitted with two Dynamixels, one for moving the leg forward or backward compared to the robot, and one for lift the foot of the robot. With a combined lifting and forward/backward motion of the leg it is possible to move the robot in the desired direction which will be described in the Movement section.
+
+<h2>Design</h2>
+For this robot we used a simple state machine reacting on the Zigbee input for control. When the appropriate key is pressed on the computer keyboard the robot changes to the correspondent movement state. <br>
+The controls are the following:
+
+<ul>
+	<li><i>Forward</i> "w": Moving the legs in unison for forward motion.</li><br>
+	<li><i>Backward</i> "s": Moving the legs opposite of <i>Forward</i> in order to move backwards.</li><br>
+	<li><i>Left</i> "a": Moving forward but moving the right legs more than the left to turn left.</li><br>
+	<li><i>Turn Left On Spot</i> "j": Moving the left legs forward and right legs backwards to turn on the spot.</li>
+	<br>
+	<li><i>Right</i> "d": Moving forward but moving the left legs more than the right to turn right.</li><br>
+	<li><i>Turn Right On Spot</i> "k": Moving the right legs forward and left legs backwards to turn on the spot.</li><br>
+</ul>
+
+To handle these inputs a switch case were used on the input and the robot then performed the tasks described above. The key that was pressed was then saved as the command and was maintained until any changes occurred. The activity diagram for the robot can be seen below:<br><br>
+<div><div style="text-align: center">
+<img src="s103045_files/RemoteFlowDiagram.png" style="width:500px"/>
+</div><div style="text-align: center"><b>Figure 2:</b> Subsumption diagram</div></div>
+<br><br>
+With a switch case on the key recieved from the Zigbee, the robot changes to another state and loops around. As mentioned if this key haven't changed the same case will be chosen and continue to do perform that action.
+
+
+<h2>Movement</h2>
+
+The movement of the robot is defined by the lifting and movement of the legs, which have to be fairly synchronous in order for it not to fall. For it to move forward example all four legs have to both lift and change position during the steps, making this design a bit more unstable compared to for example a six legged robot which always have a three-point contact.
+<br><br>
+To illustrate the movement a sequence diagram of the function "move_forward" have been made. This can be seen in the figure below:
+<br><br>
+<div><div style="text-align: center">
+<img src="s103045_files/RemoteMoveForward.png" style="width:800px"/>
+</div><div style="text-align: center"><b>Figure 3: Forward movement</b></div></div>
+<br><br>
+This diagram translates to the following motion:
+<ul>
+	<li>1. Lift the left front and the right back legs.</li>
+	<li>2. Drag forward with right front and left back leg.</li>
+	<li>3. Set down the left front and right back legs.</li>
+	<li>4. Lift the left back and the right front legs.</li>
+	<li>4. Drag forward with right back and left front leg.</li>
+	<li>4. Set down the left back and right front legs.</li>
+</ul>
+<br><br> 
+The movement for turning left and right are just a slight modification, where the dragging on the right and left respectively are reduced. When we are turning on the spot we utilize half of the movement of 
+<h2>Results</h2>
+
+<div><div style="text-align: center">
+<img src="s103045" height='315px' width="420px" style="margin-bottom:0;"/>
+</div><div style="text-align: center"><b>Figure 2:</b> Histogram</div></div>
+
+
+
+<!--
+
+<h2>References</h2>
+[1] R. Pfeifer and C. Scheier, Understanding Intelligence. MIT Press, 1999<br>
+[2] R. Pfeifer and C. Scheier, Understanding Intelligence. MIT Press, 1999<br>
+[3] R. Pfeifer and C. Scheier, Understanding Intelligence. MIT Press, 1999<br>
+[4] R. Pfeifer and C. Scheier, Understanding Intelligence. MIT Press, 1999<br>
+
+-->
