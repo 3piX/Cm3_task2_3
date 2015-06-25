@@ -43,7 +43,15 @@
 			"file": "s103045.html",
 			"settings":
 			{
-				"buffer_size": 5483,
+				"buffer_size": 6229,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/christian/Documents/Modular Robotics/Cm3_task23/Arkiv/Auto/HomePage/s142949.html",
+			"settings":
+			{
+				"buffer_size": 7251,
 				"line_ending": "Unix"
 			}
 		},
@@ -88,6 +96,8 @@
 	},
 	"file_history":
 	[
+		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/main.c",
+		"/media/christian/EXTERNAL/s103045/s103045.html",
 		"/home/christian/Documents/Modular Robotics/Cm3_Task4/DrawingRbot/Makefile",
 		"/home/christian/Downloads/test/s103045/s103045.html",
 		"/home/christian/Downloads/test/sxxxxxxx/sxxxxxxx.html",
@@ -99,7 +109,6 @@
 		"/home/christian/Documents/Modular Robotics/Cm3_Task4/.gitignore",
 		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotAtonomus/APP/src/main.c",
 		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotAtonomus/APP/src/MotorControl.c",
-		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/main.c",
 		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/DXL.c",
 		"/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/inc/MotorControl.h",
 		"/home/christian/Documents/Modular Robotics/Cm3_task1/WheeledRobotRemoteControlV1/APP/src/main.c",
@@ -150,6 +159,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"obs",
 			"nostdlib",
 			"CC",
 			"LD",
@@ -195,15 +205,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5483,
+						"buffer_size": 6229,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4924,
-								4924
+								5502,
+								5502
 							]
 						],
 						"settings":
@@ -211,7 +221,7 @@
 							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1010.0,
+						"translation.y": 1044.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -219,6 +229,34 @@
 				},
 				{
 					"buffer": 1,
+					"file": "/home/christian/Documents/Modular Robotics/Cm3_task23/Arkiv/Auto/HomePage/s142949.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7251,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4075,
+								4075
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 687.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "/home/christian/Documents/Modular Robotics/Cm3_task23/WalkingRobotRemote/APP/src/MotorControl.c",
 					"semi_transient": false,
 					"settings":
@@ -243,7 +281,7 @@
 						"translation.y": 4699.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
